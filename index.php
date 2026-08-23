@@ -2166,9 +2166,37 @@ bot('sendPhoto',[
 [['text'=>"✅ Tasdiqlash",'callback_data'=>"on=$fid"],['text'=>"❌ Bekor qilish",'callback_data'=>"off=$fid"]],
 ]])
 ]);
+// Bosh admindan tashqari qolgan barcha adminlarga ham xabar (check)
+// ko'rinib tursin, lekin ular tasdiqlash/bekor qilish tugmalarini
+// ko'rmaydi — faqat kuzatish uchun yuboriladi.
+foreach($admin as $admin_ko){
+$admin_ko = trim($admin_ko);
+if($admin_ko !== "" and $admin_ko != $uzder_php){
+bot('sendPhoto',[
+'chat_id'=>$admin_ko,
+'photo'=>$file,
+'caption'=>"📄 <b>Foydalanuvchidan check (faqat ko'rish uchun):</b>
+
+👮‍♂️ <b>Foydalanuvchi:</b> <a href='https://tg://user?id=$fid'>$name</a>
+🔎 <b>ID raqami:</b> $fid
+💵 <b>Telefon Raqami:</b> <code>$hisob</code>
+
+<i>👁 Bu so'rovni faqat bosh admin tasdiqlashi yoki bekor qilishi mumkin.</i>",
+'disable_web_page_preview'=>true,
+'parse_mode'=>'html',
+]);
+}}
 }}}
 
 if(mb_stripos($data,"on=")!==false){
+if($ccid != $uzder_php){
+bot('answerCallbackQuery',[
+'callback_query_id'=>$callid,
+'text'=>"⛔️ Ovozlarni faqat bosh admin tasdiqlashi mumkin!",
+'show_alert'=>true,
+]);
+exit();
+}
 $odam=explode("=",$data)[1];
 bot('deleteMessage',[
 'chat_id'=>$ccid,
@@ -2204,6 +2232,14 @@ bot('SendMessage',[
 }
 
 if(mb_stripos($data,"off=")!==false){
+if($ccid != $uzder_php){
+bot('answerCallbackQuery',[
+'callback_query_id'=>$callid,
+'text'=>"⛔️ Ovozlarni faqat bosh admin bekor qila oladi!",
+'show_alert'=>true,
+]);
+exit();
+}
 $odam=explode("=",$data)[1];
 bot('deleteMessage',[
 'chat_id'=>$ccid,
