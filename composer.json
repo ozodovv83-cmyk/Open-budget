@@ -1,0 +1,11 @@
+{
+    "name": "openbudget/telegram-bot",
+    "description": "OpenBudget.uz ovoz berish Telegram boti",
+    "type": "project",
+    "require": {
+        "php": ">=8.1",
+        "ext-curl": "*",
+        "ext-mbstring": "*",
+        "ext-json": "*"
+    }
+}
